@@ -126,7 +126,7 @@ void SingleLinkedList::insertAtBeginning(int data){
     Node * temp; // temp node 
     temp = new Node(data); // add data to node
     
-    if(!isEmpty){ // start should not be null for insertion
+    if(!isEmpty()){ // start should not be null for insertion
         temp->link = start; // temp points to the first node
         start = temp; // start points to temp
     }
@@ -195,3 +195,156 @@ void SingleLinkedList::insertAfter(int new_data, int nodeData){
         }
     }
 }
+
+
+
+// Insertion before a node
+void SingleLinkedList::insertBefore(int new_data, int nodeData){
+    Node *ptr, *temp;
+
+    ptr = start; // ptr points to start which points to first node
+
+    if(isEmpty()){
+        cout << "list is empty\n"; // if list is empty
+    }
+
+    else if (ptr->info == nodeData){ // nodeData is in first node
+
+        temp = new Node(new_data);
+        temp->link = ptr; // temp linked to the first node
+        start = temp; // start points to temp
+
+        // start -> temp(new node) -> null
+    }
+
+    else{
+
+        while(ptr->link != nullptr){
+
+        if(ptr->link->info == nodeData){ // compare the data value of the node 
+                                        // before which we need to insert the new node
+            temp = new Node(new_data);
+            temp->link = ptr->link; // point the new node to the node before which this new node will be inserted
+            ptr->link = temp; // the node previous to the desired node points to the new temp node
+            break;
+
+            // node 1 -> new node -> desired node
+        }
+
+        ptr = ptr->link; // traversal
+
+        }
+    }
+
+    if(ptr->link == nullptr){
+        cout << "Item " << nodeData << " is not in the list.\n";
+    }
+
+}
+
+
+
+// Insertion in between two nodes
+void SingleLinkedList::insertAtPosition(int data, int position){
+    Node * ptr, *temp;
+
+    if(position == 1){
+        temp = new Node(data);
+        temp->link = start; // temp points to the node which start was pointing to
+        start = temp; // start points to temp now i.e. temp is the new start
+    } // finally its insertion at head
+
+
+    else{
+
+        ptr = start; // ptr points to first node
+
+        int index = 1;
+
+        while (ptr != nullptr && index < position-1)
+        {
+            ptr = ptr->link; // traversal from node to node
+            index++; // counting nodes' index
+        }
+
+
+        if(ptr != nullptr && position > 0)
+        {
+            temp = new Node(data);
+            temp->link = ptr->link;
+            ptr->link = temp;
+        }
+
+        else
+        {
+            cout<< "Item cannot be inserted at position :" << position << endl;
+        }
+    }
+}
+
+
+
+void SingleLinkedList::deleteAtBeginning(){
+
+    Node * temp;
+
+    if(isEmpty()){
+        cout << "List is empty" << endl;
+    }
+
+    else{
+
+        temp = start; // temp points to first node which was pointed to by start
+        start = start->link; // now start points to the next node as start->link gives the first node's link to second
+        delete temp; // we delete the first node
+    }
+}
+
+
+void SingleLinkedList::deleteNode(int nodeData)
+{
+
+    Node  *ptr, *temp;
+
+    ptr = start;
+
+    if(isEmpty()){
+        cout << "List is Empty 💀" << endl;
+    }
+
+    else if (ptr->info == nodeData) // start points to the node which is to be deleted i.e.
+    {                               // the first node in this case
+        temp = ptr; // capture first node in ptr
+        start = ptr->link; // start points to the node next to first node
+        delete temp; 
+    }
+
+    else
+    {
+        while (ptr->link != nullptr)
+        {
+            if(ptr->link->info == nodeData){ // stop if you find the node before the desired node
+                break;   // ptr->link->info means the value stored by next node
+            }
+
+            ptr = ptr->link; // traversal ofc
+
+        }
+
+        if(ptr->link == nullptr){
+            cout << nodeData << " not found in the list 😖"<<endl;
+        }
+
+        else
+        {
+            temp = ptr->link; // point to the next node which is the node to be deleted
+            ptr->link = ptr->link->link; // the node which we stopped at points to the node next to the deleted node
+            delete temp; 
+        }
+        
+    }
+
+}
+
+
+
