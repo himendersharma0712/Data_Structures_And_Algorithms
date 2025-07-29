@@ -101,3 +101,96 @@ void PriorityQueue::enqueue(int data, int priority)
 
 }
 
+bool PriorityQueue::isEmpty(){
+    return (front == nullptr);
+}
+
+int PriorityQueue::dequeue()
+{
+    Node * temp;
+
+    int val;
+
+    if(isEmpty())
+    {
+        throw("Queue is empty");
+    }
+
+    else{
+
+        val = front->info;
+        temp = front;
+        front = front->link;
+        delete temp;
+    }
+
+    return val;
+}
+
+
+int PriorityQueue::peek()
+{
+    if(isEmpty())
+    {
+        throw("queue is empty");
+    }
+
+    return front->info;
+}
+
+
+void PriorityQueue::display()
+{
+    Node * ptr;
+
+    if(!isEmpty())
+    {
+        cout << "Priority, Data Item\n";
+        ptr = front;
+
+        while(ptr!=nullptr)
+        {
+            cout << ptr->priority << ", " << ptr->info << endl;
+            ptr = ptr->link;
+        }
+    }
+
+    else
+    {
+        cout << "Queue is empty";
+    }
+}
+
+
+int PriorityQueue::size()
+{
+    Node * ptr;
+
+    int count = 0;
+
+    ptr = front;
+
+    while(ptr != nullptr)
+    {
+        count++;
+        ptr = ptr->link;
+    }
+
+    return count;
+}
+
+
+
+int main()
+{
+
+    PriorityQueue pq;
+
+    pq.enqueue(45,1);
+    pq.enqueue(58,3);
+    pq.enqueue(23,2);
+
+    pq.dequeue();
+
+    pq.display();
+}
